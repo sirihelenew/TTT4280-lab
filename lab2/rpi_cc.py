@@ -102,6 +102,6 @@ if __name__ == "__main__":
     n13 = (cross_correlation(signal1, signal3, 31250))
     n12 = (cross_correlation(signal1, signal2, 31250))
     theta = np.degrees(np.arctan2(np.sqrt(3)*(n23+n13),(n23-n13-2*n12)))
-    print(f"n23 = {n23}, n13 = {n13}, n12 = {n12}, theta = {theta}")
+    print(f"n23 = {n23}, n13 = {n13}, n12 = {n12}, theta = {theta}")    
 
     

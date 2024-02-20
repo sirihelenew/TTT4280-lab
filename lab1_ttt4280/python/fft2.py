@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     #Hanning window
     window = windows.hann(len(channel_data))
-    windowed_data = window * channel_data 
+    windowed_data = channel_data 
 
     #Zero-padding
     zero_padding_factor = 2
@@ -49,32 +49,32 @@ if __name__ == "__main__":
     psd_channel_data = np.abs(fft_data_channel) ** 2 / n_padded
 
     #magnitude_db_channel_data = 20 * np.log10(magnitude_channel_data)
-    magnitude_db_channel_data = 20 * np.log10(psd_channel_data)
+    magnitude_db_channel_data = 20 * np.log10(magnitude_channel_data)
     magnitude_db_normalisert_channel_data = magnitude_db_channel_data - np.max(magnitude_db_channel_data)
 
 
     #Plot 
     #n_padded//2 for å få med kun den positive delen av frekvensspekteret
-    #plt.plot(frequencies[:n_padded//2], magnitude_db_normalisert[:n_padded//2], color='deepskyblue', label='Med Hanning-vindu')
-    #plt.plot(frequencies[:n_padded//2], magnitude_db_normalisert_channel_data[:n_padded//2], color='hotpink')
-    plt.figure()
-    plt.psd(magnitude_db_channel_data, Fs=31250)
-    plt.title('Frekvensspektrum av Sinusbølge, ADC 2')
-    plt.xlabel('Frekvens [Hz]')
-    plt.ylabel('Normalisert amplitude [dB]')
-    #plt.xlim(0,200)
-    #plt.ylim(-100,0)
-    plt.legend()
-    plt.show()
+    # plt.plot(frequencies[:n_padded//2], magnitude_db_normalisert[:n_padded//2], color='deepskyblue', label='Med Hanning-vindu')
+    # plt.plot(frequencies[:n_padded//2], magnitude_db_normalisert_channel_data[:n_padded//2], color='hotpink', label='Uten Hanning-vindu')
+    # #plt.figure()
+    # #plt.psd(magnitude_db_channel_data, Fs=31250)
+    # plt.title('Sammenligning av frekvensspektrum med og uten Hanning-vindu', fontsize=22)
+    # plt.xlabel('Frekvens [Hz]', fontsize=18)
+    # plt.ylabel('Normalisert amplitude [dB]', fontsize=18)
+    # plt.xlim(50,150)
+    # plt.ylim(-160,0)
+    # plt.legend(loc='upper right', fontsize=14)
+    # plt.show()
 
-    """plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 6))
     plt.plot(frequencies[:n_padded//2], magnitude_db_normalisert[:n_padded//2], color='mediumorchid', label='ADC 3')
-    plt.xlabel('Frekvens [Hz]')
-    plt.ylabel('Normalisert amplitude [dB]')
+    plt.xlabel('Frekvens [Hz]', fontsize=18)
+    plt.ylabel('Normalisert amplitude [dB]', fontsize=18)
     plt.xlim(50,150)
-  
-    plt.title('Frekvensspektrum av Sinusbølge, ADC 5, med Zero-padding faktor 10')
-    plt.show()"""
+    plt.ylim(-160,0)
+    plt.title('Frekvensspektrum av Sinusbølge, ADC 5, med Zero-padding faktor 2', fontsize=22)
+    plt.show()
 
     
     #magnitude_db_normalisert = magnitude_db - np.max(magnitude_db)

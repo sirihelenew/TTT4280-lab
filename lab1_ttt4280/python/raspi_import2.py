@@ -19,7 +19,7 @@ def raspi_import(path, channels=5):
 if __name__ == "__main__":
     sample_period, data = raspi_import(sys.argv[1] or 'foo.bin')
 
-    channel_data = data[:,4]
+    channel_data = data[:,0]
 
     zero_padding_factor = 5
     
@@ -44,8 +44,8 @@ if __name__ == "__main__":
 
     #sx = np.square(magnitude)
 
-    #magnitude_db = 20 * np.log10(magnitude)
-    magnitude_db = 20 * np.log10(psd)
+    magnitude_db = 20 * np.log10(magnitude)
+    #magnitude_db = 20 * np.log10(psd)
     magnitude_db_normalisert = magnitude_db - np.max(magnitude_db)
 
     # plt.figure()
@@ -60,12 +60,13 @@ if __name__ == "__main__":
 
 # Plot frequency spectrum
     plt.figure(figsize=(10, 6))
-    plt.plot(frequencies[:n//2], magnitude_db_normalisert[:n//2], color='mediumorchid')
-    plt.xlabel('Frekvens [Hz]')
-    plt.ylabel('Normalisert amplitude [dB]')
-    #plt.xlim(0,200)
-    #plt.ylim(0,400)
-    plt.title('Frekvensspektrum av Sinusbølge, ADC 5')
+    #plt.plot(frequencies[:n//2], magnitude_db_normalisert[:n//2], color='darkgreen')
+    plt.plot(frequencies, magnitude_db, color='darkgreen')
+    plt.xlabel('Frekvens [Hz]', fontsize=18)
+    plt.ylabel('Normalisert amplitude [dB]',fontsize=18)
+    plt.xlim(0,31250)
+    plt.ylim(-150,0)
+    plt.title('Frekvensspektrum av Sinusbølge, ADC 1', fontsize=22)
     plt.show()
 
     # Plot each channel individually

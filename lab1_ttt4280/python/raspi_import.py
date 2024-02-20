@@ -35,6 +35,7 @@ def raspi_import(path, channels=5):
     return sample_period, data
 
 
+
 # Import data from bin file
 if __name__ == "__main__":
     sample_period, data = raspi_import(sys.argv[1] or 'foo.bin')
@@ -48,6 +49,7 @@ if __name__ == "__main__":
     sample_period, data = raspi_import(sys.argv[1] or 'foo.bin')
 
     channel_data = data[:,0]
+    print(sample_period)
 
 # Apply a window function (e.g., Hanning window)
     #window = windows.hann(len(channel_data))
