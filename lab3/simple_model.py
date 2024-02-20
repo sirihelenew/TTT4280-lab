@@ -4,9 +4,9 @@ import numpy as np
 muabo = np.genfromtxt("./muabo.txt", delimiter=",")
 muabd = np.genfromtxt("./muabd.txt", delimiter=",")
 
-red_wavelength = None # Replace with wavelength in nanometres
-green_wavelength = None # Replace with wavelength in nanometres
-blue_wavelength = None # Replace with wavelength in nanometres
+red_wavelength = 600 # Replace with wavelength in nanometres
+green_wavelength = 520 # Replace with wavelength in nanometres
+blue_wavelength = 460 # Replace with wavelength in nanometres
 
 wavelength = np.array([red_wavelength, green_wavelength, blue_wavelength])
 
@@ -34,3 +34,14 @@ musr = 100 * (17.6*(wavelength/500)**-4 + 18.78*(wavelength/500)**-0.22)
 # Red, green and blue correspond to indexes 0, 1 and 2, respectively
 
 # TODO calculate penetration depth
+
+pt = np.sqrt(1/(3*(mua + musr)*mua)) # penetration depth
+c = np.sqrt(3*mua*(mua + musr)) # speed of light in tissue
+
+d = (300*(10**(-6))) # distance (meters)
+
+T = np.exp(-c*d)*100
+R = 100 - T
+
+print(T)
+print(R)
