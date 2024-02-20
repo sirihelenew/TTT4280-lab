@@ -59,6 +59,7 @@ def cross_correlation(signal1, signal2, fs):
     delay_seconds = tidsforsinkelse / fs
 
     lags = np.arange(-len(signal1) + 1, len(signal1),1)
+    lags = np.arange(-len(signal1) + 1, len(signal1),1/4)
     lag = np.argmax(abs(crosscorrelation))
 
 
@@ -69,14 +70,14 @@ def cross_correlation(signal1, signal2, fs):
 
     # Plot 
     
-    # plt.plot(lags, crosscorrelation, color='deeppink')
+    plt.plot(lags, crosscorrelation, color='deeppink')
     
-    # plt.title('Krysskorrelasjon mellom signalene')
-    # plt.xlabel('Forsinkelse')
-    # plt.ylabel('Krysskorrelasjon')
+    plt.title('Krysskorrelasjon mellom signalene')
+    plt.xlabel('Forsinkelse')
+    plt.ylabel('Krysskorrelasjon')
 
-    # #plt.tight_layout()
-    # plt.show()
+    #plt.tight_layout()
+    plt.show()
 
     return lags[lag]
 
@@ -90,10 +91,12 @@ if __name__ == "__main__":
     sample_period, data = raspi_import(filepath)
     data = scipy.signal.detrend(data, axis=0)
     #plot_channel_data(sample_period, data, channel=0) #ADC 
-    t = np.arange(0, 1, 1/31250)
+    #t = np.arange(0, 1, 1/31250)
+    t = np.linspace(0, 1, 31250)
     signal2 = data[:,1]
     signal2_interpolate = scipy.interpolate.interp1d(t, signal2)
     signal2_interpolated = signal2_interpolate(t)
+
     signal3 = data[:,2]
     signal3_interpolate = scipy.interpolate.interp1d(t, signal3)
     signal3_interpolated = signal3_interpolate(t)
