@@ -33,21 +33,22 @@ def raspi_import(path, channels=5):
     sample_period *= 1e-6
     return sample_period, data
 
+
+
 def plot_channel_data(sample_period, data, channel=0):
     time_axis = np.arange(data.shape[0]) * sample_period  # Beregn tidsaksen
     plt.figure(figsize=(10, 6))
     plt.plot(time_axis, data[:, channel] - np.mean(data[:, channel]), color='deeppink')  # Trekker fra gjennomsnittet for å sentrere rundt 0
-    #plt.plot(np.arange(data.shape[0])*sample_period, data[:,2]*2/2500, label='ADC 1', color='mediumorchid')
     plt.xlabel('Tid (s)')
     plt.ylabel('Amplitude')
     plt.title(f'Signal fra ADC 1')
-    plt.ylim(-400,400)
+    plt.xlim(0.1,1)
     plt.grid(True)
     plt.show()
 
 
 
-def cross_correlation(signal1, signal2, fs):
+def cross_correlation(signal1, signal2, fs, label):
     crosscorrelation = np.correlate(signal1, signal2, mode='full')
     max_cc = np.argmax(np.abs(crosscorrelation))
 
@@ -70,14 +71,14 @@ def cross_correlation(signal1, signal2, fs):
     #plt.subplot(2, 1, 2)
     #plt.plot((np.arange(len(crosscorrelation)) - len(signal1) + 1) / fs, crosscorrelation, color='deeppink')
     #plt.plot(delay, crosscorrelation, color='deeppink')
-    plt.plot(lags, crosscorrelation, color='deeppink')
+    plt.plot(lags, crosscorrelation, color='mediumblue')
     #plt.axvline(x=delay_seconds, color='aqua', linestyle='--')
     #plt.axvline(x=delay, color='darkorange', linestyle='--')
     #plt.text(delay_seconds, 0, f'  {delay_seconds:.2f} s', verticalalignment='bottom')
     #plt.text(lags, 0, f'  {lags:.2f} s', verticalalignment='bottom')
     #plt.xlim(-200, 200)
-    plt.title('Krysskorrelasjon mellom signalene')
-    plt.xlabel('Forsinkelse')
+    plt.title('Krysskorrelasjon mellom ' + label)
+    plt.xlabel('Forsinkelse i lags [l]')
     plt.ylabel('Krysskorrelasjon')
 
     #plt.tight_layout()
@@ -94,13 +95,14 @@ if __name__ == "__main__":
 
     sample_period, data = raspi_import(filepath)
     data = scipy.signal.detrend(data, axis=0)
-    #plot_channel_data(sample_period, data, channel=0) #ADC 
+    #plot_channel_data(sample_period, data, channel=2) #ADC 
     signal2 = data[:,1]
     signal3 = data[:,2]
     signal1 = data[:,0]
-    n23 = (cross_correlation(signal2, signal3, 31250))  
-    n13 = (cross_correlation(signal1, signal3, 31250))
-    n12 = (cross_correlation(signal1, signal2, 31250))
+    #autocorr = cross_correlation(signal1, signal1,31250)
+    n23 = (cross_correlation(signal2, signal3, 31250, "ADC 2 og ADC 3"))  
+    n13 = (cross_correlation(signal1, signal3, 31250, "ADC 1 og ADC 3"))
+    n12 = (cross_correlation(signal1, signal2, 31250, "ADC 1 og ADC 2"))
     theta = np.degrees(np.arctan2(np.sqrt(3)*(n23+n13),(n23-n13-2*n12)))
     print(f"n23 = {n23}, n13 = {n13}, n12 = {n12}, theta = {theta}")    
 
