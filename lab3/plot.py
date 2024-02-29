@@ -18,8 +18,10 @@ with open('opptak4.txt', 'r') as f:
 b = signal.detrend(b)
 t = np.arange(0,10, 10/len(g))
 
+b_hann = np.hanning(len(b))*b
+
 n_pad = 2**15
-b_pad = np.pad(b, (0, n_pad - len(b)), 'constant')
+b_pad = np.pad(b_hann, (0, n_pad - len(b)), 'constant')
     
 autocorr = np.correlate(b_pad, b_pad, mode='full')  
 lags = np.arange(-n_pad + 1, n_pad,1) 
@@ -29,6 +31,16 @@ freq = np.fft.fftfreq(n_pad)
     
 #plt.plot(t, b)
 #plt.plot(freq*30*60, np.abs(fft))
-plt.plot(60*30/lags, autocorr)
-plt.xlim(-1000,1000)
-plt.show()
+#plt.plot(lags, autocorr)
+#plt.xlim(-1000,1000)
+#plt.show()
+
+for i in range(-5, 5):
+    autocorr[n_pad + i] = 0
+    
+index = np.argmax(autocorr)
+puls = 30*60/lags[index]
+
+puls_fft = 30*60*freq[np.argmax(fft)]
+print("Puls med autokorrelasjon: ", -1*puls)
+print("Puls med FFT: ", -1*puls_fft)
