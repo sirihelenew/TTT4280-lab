@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 #hente fra fil
-with open('output/opptak7.txt', 'r') as f:
+with open('output/allah.txt', 'r') as f:
     r = []
     g = []
     b = []
@@ -42,5 +42,7 @@ index = np.argmax(autocorr)
 puls = 30*60/lags[index]
 
 puls_fft = 30*60*freq[np.argmax(fft)]
-print("Puls med autokorrelasjon: ", -1*puls)
-print("Puls med FFT: ", -1*puls_fft)
+print("Puls med autokorrelasjon: ", abs(puls))
+print("Puls med FFT: ", abs(puls_fft))
+# print(lags[index])
+# print(freq[np.argmax(fft)])
