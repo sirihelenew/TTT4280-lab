@@ -19,6 +19,11 @@ for i in range(len(puls)):
     
 puls_std2 = puls_var/2
 
+print("Standardavvik funnet med np.std(): ", puls_std1)
+print("Gjennomsnittelig puls målt med klokke: ", puls_klokke_snitt)
+print("Standardavvik: ", puls_std2)
+
+
 
     
 
