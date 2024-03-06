@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy import signal
 
 #hente fra fil
-with open('output/allah.txt', 'r') as f:
+with open('outputny/eggan28.txt', 'r') as f:
     r = []
     g = []
     b = []
@@ -15,18 +15,18 @@ with open('output/allah.txt', 'r') as f:
         g.append(float((line[1]).strip()))
         b.append(float((line[2]).strip()))
 
-b = signal.detrend(b)
+g = signal.detrend(g)
 t = np.arange(0,10, 10/len(g))
 
-b_hann = np.hanning(len(b))*b
+g_hann = np.hanning(len(g))*g
 
 n_pad = 2**15
-b_pad = np.pad(b_hann, (0, n_pad - len(b)), 'constant')
+g_pad = np.pad(g_hann, (0, n_pad - len(g)), 'constant')
     
-autocorr = np.correlate(b_pad, b_pad, mode='full')  
+autocorr = np.correlate(g_pad, g_pad, mode='full')  
 lags = np.arange(-n_pad + 1, n_pad,1) 
 
-fft = np.fft.fft(b_pad, n_pad)
+fft = np.fft.fft(g_pad, n_pad)
 freq = np.fft.fftfreq(n_pad)
     
 #plt.plot(t, b)
