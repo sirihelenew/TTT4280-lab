@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import signal
 
-with open('data/eggan1.txt', 'r') as f:
+with open('outputny/6.txt', 'r') as f:
     r = []
     g = []
     b = []
