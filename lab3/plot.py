@@ -36,11 +36,15 @@ plt.plot(freq*30*60, np.abs(fft))
 plt.xlim(0,200)
 plt.show()
 
+støy = fft.tolist()
 
-std_signal = abs(np.std(fft))
-max_signal = abs(np.argmax(fft))
+for i in range(2914-20, 2914+20):
+    støy.pop(i)
 
-SNR = max_signal/std_signal
+std_støy = abs(np.std(støy))
+max_signal = abs(np.max(fft))
+
+SNR = max_signal/std_støy
 
 
 print("SNR: ", SNR)
