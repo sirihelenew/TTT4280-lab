@@ -4,7 +4,7 @@ import scipy.signal as signal
 from scipy.signal import correlate
 
 # Last inn data fra tekstfil
-data = np.loadtxt('output/ny6.txt')
+data = np.loadtxt('outputny/vigiropp.txt')
 
 N = 2**7
 # Del dataene i tre kolonner for rød, grønn og blå
@@ -35,7 +35,7 @@ plt.ylabel('Korrelasjon')
 #FFT av signalet
 plt.figure()
 plt.plot(freq_bpm, np.abs(data_fft), color='green')
-plt.xlim(0, 240)
+#plt.xlim(0, 240)
 plt.title('FFT av Grønn Kanal')
 plt.xlabel('BPM')
 plt.ylabel('Amplitude')
