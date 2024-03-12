@@ -35,14 +35,16 @@ musr = 100 * (17.6*(wavelength/500)**-4 + 18.78*(wavelength/500)**-0.22)
 
 # TODO calculate penetration depth
 
-pt = np.sqrt(1/(3*(mua + musr)*mua)) # penetration depth
-c = np.sqrt(3*mua*(mua + musr)) # speed of light in tissue
+p_finger = np.sqrt(1/(3*(mua+musr)*mua))
+p_blod = np.sqrt(1/(3*(mua_blood+musr)*mua_blood))
+d_finger = 8.45e-3
+d_blodåre = 300e-6
+T_blod = np.exp(-(1/p_blod)*d_blodåre)*100
+T_vev = np.exp(-(1/p_finger)*d_blodåre)*100
+T_finger = np.exp(-(1/p_finger)*d_finger)*100
 
-d = (300*(10**(-6))) # distance (meters)
+K = (T_vev-T_blod)/T_vev
 
-T = np.exp(-c*d)*100
-R = 100 - T
 
-print(T)
-print(R)
+print(K)
 
