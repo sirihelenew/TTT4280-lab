@@ -47,8 +47,8 @@ def data(fil, num):
 
 
 
-ifq, t, sample_period = data('1data3.bin', 4)
-ifi, t, sample_period = data('1data3.bin', 3)
+ifq, t, sample_period = data('samples/v1-1.bin', 2)
+ifi, t, sample_period = data('samples/v1-1.bin', 1)
 
 def fft(signal1, signal2):
     N= 2**14
@@ -61,20 +61,20 @@ def fft(signal1, signal2):
     plt.plot(N_FFT, FFT2)
 
 
-f_D = []
+#f_D = []
 
-def v_r(vec):
-    f_0 = 24.13*10**9
-    c = 3*10**8
-    hastigheter = []
-    for i in range (0,len(vec)):
-        fart = (vec[i]*c)/(2*f_0)
-        hastigheter.append(fart)
+# def v_r(vec):
+#     f_0 = 24.13*10**9
+#     c = 3*10**8
+#     hastigheter = []
+#     for i in range (0,len(vec)):
+#         fart = (vec[i]*c)/(2*f_0)
+#         hastigheter.append(fart)
     
-    return hastigheter
+#     return hastigheter
 
-np.average(v_r(f_D))
-np.std(v_r(f_D))
+# np.average(v_r(f_D))
+# np.std(v_r(f_D))
 
 
 
