@@ -42,45 +42,67 @@ def data(fil, num):
     sample_period, data = raspi_import(fil)
     t = np.arange(0, len(data)*sample_period, sample_period)
     
-    data = [vector[num] for vector in data]
-    return data, t, sample_period
+    # data = [vector[num] for vector in data]
+    return data[:, num], t, sample_period
 
 
 
-ifq, t, sample_period = data('samples/v1-1.bin', 2)
-ifi, t, sample_period = data('samples/v1-1.bin', 1)
+ifq, t, sample_period = data('2data3.bin', 4)
+ifi, t, sample_period = data('2data3.bin', 3)
 
-def fft(signal1, signal2):
-    N= 2**14
+# ifq = signal.detrend(ifq[80000:82000]) * 8.0566e-4
+# ifi = signal.detrend(ifi[80000:82000]) * 8.0566e-4
+# t = t[80000:82000]
+ifq = signal.detrend(ifq[3000:]) * 8.0566e-4
+ifi = signal.detrend(ifi[3000:]) * 8.0566e-4
+t = t[3000:] 
+
+print(ifq.shape)
+
+x = ifi+ 1j*ifq
+
+def fft(signal1):
+    N= 2**18
     N_FFT = np.fft.fftfreq(N)
+    FFT1 = np.fft.fft(x, N)
 
-    FFT1 = np.fft.fft(signal1, N)
-    FFT2 = np.fft.fft(signal2, N)
-
-    plt.plot(N_FFT, FFT1)
-    plt.plot(N_FFT, FFT2)
-
-
-#f_D = []
-
-# def v_r(vec):
-#     f_0 = 24.13*10**9
-#     c = 3*10**8
-#     hastigheter = []
-#     for i in range (0,len(vec)):
-#         fart = (vec[i]*c)/(2*f_0)
-#         hastigheter.append(fart)
+    plt.plot(N_FFT*1/sample_period, abs(FFT1))
     
-#     return hastigheter
-
-# np.average(v_r(f_D))
-# np.std(v_r(f_D))
 
 
+f_D1 = []
+f_D2 = []
+f_D3 = []
 
-plt.plot(t, ifq)
-plt.plot(t, ifi)
+def v_r(vec):
+    f_0 = 24.13*10**9
+    c = 3*10**8
+    hastigheter = []
+    for i in range (0,len(vec)):
+        fart = (vec[i]*c)/(2*f_0)
+        hastigheter.append(fart)
+    
+    return hastigheter
 
-#fft(ifq, ifi)
+avr1 = np.average(v_r(f_D1))
+std1 = np.std(v_r(f_D1))
 
+avr2 = np.average(v_r(f_D2))
+std2 = np.std(v_r(f_D2))
+
+avr3 = np.average(v_r(f_D3))
+std3 = np.std(v_r(f_D3))
+
+print("avr1 = ", avr1, "\n", "std1 = ", std1)
+print("avr2 = ", avr2, "\n", "std1 = ", std2)
+print("avr3 = ", avr3, "\n", "std1 = ", std3)
+
+
+# plt.plot(t, ifq)
+# plt.plot(t, ifi)
+
+fft(x)
+# plt.ylim(0,800000)
+plt.xlim(-300,300)
+plt.legend()
 plt.show()
