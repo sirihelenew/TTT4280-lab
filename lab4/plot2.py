@@ -47,8 +47,8 @@ def data(fil, num):
 
 
 
-ifq, t, sample_period = data('2data3.bin', 4)
-ifi, t, sample_period = data('2data3.bin', 3)
+ifq, t, sample_period = data('samples/v2-2.bin', 2)
+ifi, t, sample_period = data('samples/v2-2.bin', 1)
 
 # ifq = signal.detrend(ifq[80000:82000]) * 8.0566e-4
 # ifi = signal.detrend(ifi[80000:82000]) * 8.0566e-4
@@ -97,12 +97,23 @@ print("avr1 = ", avr1, "\n", "std1 = ", std1)
 print("avr2 = ", avr2, "\n", "std1 = ", std2)
 print("avr3 = ", avr3, "\n", "std1 = ", std3)
 
+støy = fft.tolist()
 
-# plt.plot(t, ifq)
-# plt.plot(t, ifi)
+for i in range(2914-20, 2914+20):
+    støy.pop(i)
+
+std_støy = abs(np.std(støy))
+max_signal = abs(np.max(fft))
+
+SNR = max_signal/std_støy
+
+
+print("SNR: ", SNR)
+#plt.plot(t, ifq)
+#plt.plot(t, ifi)
 
 fft(x)
-# plt.ylim(0,800000)
+#plt.ylim(0,800000)
 plt.xlim(-300,300)
 plt.legend()
 plt.show()
