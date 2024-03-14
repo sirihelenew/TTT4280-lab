@@ -64,9 +64,49 @@ x = ifi+ 1j*ifq
 def fft(signal1):
     N= 2**18
     N_FFT = np.fft.fftfreq(N)
-    FFT1 = np.fft.fft(x, N)
+    FFT1 = np.fft.fft(signal1, N)
+    
+    fd = N_FFT[np.argmax(FFT1)]/sample_period
+    print("f_d: ", fd)
+    
+    støy = FFT1.tolist()
+    for i in range(131072+205, 131072+241):
+        støy.pop(i)
+
+    std_støy = abs(np.std(støy))
+    max_signal = abs(np.max(FFT1))
+    
+    print(max_signal)
+
+    SNR = max_signal/std_støy
+
+    print("SNR: ", SNR)
 
     plt.plot(N_FFT*1/sample_period, abs(FFT1))
+    
+    
+def fftdB(signal1):
+    N = 2**18
+    N_FFT = np.fft.fftfreq(N)
+    FFT = np.fft.fft(signal1, N)
+    
+    # Calculate magnitude in decibels
+    magnitude_dB = 20 * np.log10(np.abs(FFT) / np.max(np.abs(FFT)))
+    
+    støy = magnitude_dB.tolist()
+    for i in range(131072+205, 131072+241):
+        støy.pop(i)
+
+    std_støy = abs(np.std(støy))
+    max_signal = abs(np.max(magnitude_dB))
+    
+    print(max_signal)
+
+    SNR = max_signal - std_støy
+
+    print("SNR dB: ", SNR)
+    
+    plt.plot(N_FFT * 1/sample_period, magnitude_dB)
     
 
 
@@ -93,27 +133,21 @@ std2 = np.std(v_r(f_D2))
 avr3 = np.average(v_r(f_D3))
 std3 = np.std(v_r(f_D3))
 
+
 print("avr1 = ", avr1, "\n", "std1 = ", std1)
 print("avr2 = ", avr2, "\n", "std1 = ", std2)
 print("avr3 = ", avr3, "\n", "std1 = ", std3)
 
-støy = fft.tolist()
-
-for i in range(2914-20, 2914+20):
-    støy.pop(i)
-
-std_støy = abs(np.std(støy))
-max_signal = abs(np.max(fft))
-
-SNR = max_signal/std_støy
 
 
-print("SNR: ", SNR)
+
+
+
 #plt.plot(t, ifq)
 #plt.plot(t, ifi)
 
 fft(x)
 #plt.ylim(0,800000)
-plt.xlim(-300,300)
+plt.xlim(0,300)
 plt.legend()
 plt.show()
